@@ -121,7 +121,7 @@ void dmpDataReady() {
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(115200);
+  Serial.begin(38400);
   Serial.println("start");                // a personal quirk
   servoL.attach(servoPinl);
   servoL.writeMicroseconds(1500); // send "stop" signal to ESC.
