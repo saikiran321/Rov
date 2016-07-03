@@ -1,0 +1,5 @@
+package exlcm;
+struct xbox
+{
+	string message;
+}
