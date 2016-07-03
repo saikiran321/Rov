@@ -111,8 +111,8 @@ void loop(){
   {
        inp = Serial.read();   // first digit for tail motor
        inp = inp - '0' ;      // next three digits for en
-       inptail=inp/1000;
-       inp=inp%1000;
+       inptail=inp/10000;
+       inp=inp%10000;
        inpen=inp;
    
 
@@ -134,14 +134,19 @@ void loop(){
     if (EnR_Pos < inpen )
     {
       digitalLow(M1BRK);
-      digitalHigh(M1Dir);  //change according to direction
+      digitalLow(M1Dir);  //change according to direction
     }
     else if (EnR_Pos > inpen)
     {
       digitalLow(M1BRK);
-      digitalLow(M1Dir);  //change according to direction
+      digitalHigh(M1Dir);  //change according to direction
     }
     long EnR_Pos = EnR.read();
+   if (abs(EnR_Pos)>=1600)
+   {
+    analogWrite(M1PWM,0);
+    break;
+    }
    }
    digitalHigh(M1BRK);
 
@@ -155,27 +160,33 @@ void loop(){
     if (EnL_Pos < inpen )
     {
       digitalLow(M2BRK);
-      digitalLow(M2Dir);   //Change direction - opp to M1
+      digitalHigh(M2Dir);   //Change direction - opp to M1
     }
     else if (EnL_Pos > inpen)
     {
       digitalLow(M2BRK);
-      digitalHigh(M2Dir);   //Change direction - opp to M2
+      digitalLow(M2Dir);   //Change direction - opp to M2
     }
     
     long EnL_Pos = EnL.read();
+    if(abs(EnL_Pos)>=1600)
+    {
+      analogWrite(M2PWM,0);
+      break;
+      }
    }
    digitalHigh(M2BRK);
   } 
+  
    // send serial data to PC - current sensor and voltage sensor
   count = count + 1;
-  if (count == 100)
+  if (count == 50)
   {
     count = 0;
-    AcsValue = AcsValue/100;
-    AvsValue = AvsValue/100;
-    Apres=Apres/100;
-    Atemp=Atemp/100;
+    AcsValue = AcsValue/50;
+    AvsValue = AvsValue/50;
+    Apres=Apres/50;
+    Atemp=Atemp/50;
     
     Serial.print(AcsValue);
     Serial.print("\t");
@@ -183,7 +194,12 @@ void loop(){
     Serial.print("\t");
     Serial.print(Apres);
     Serial.print("\t");
-    Serial.println(Atemp);
+    Serial.print(Atemp);
+    Serial.print("\t");
+    Serial.print(EnL_Pos);
+    Serial.print("\t");
+    Serial.println(EnR_Pos);
+    
         
     AcsValue = 0;
     AvsValue = 0;
@@ -192,4 +208,3 @@ void loop(){
    }
   }   
   
-
