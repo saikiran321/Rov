@@ -224,7 +224,7 @@ void loop() {
 //       
 //THRUSTER RIGHT
 
-        signal_cr = map(inptr,0,9,1100,1900);
+        signal_cr = map(inptr,1,9,1100,1900);
         if (signal_cr != signal_pr)
         {
         servoR.writeMicroseconds(signal_cr); // Send signal to ESC.
@@ -234,7 +234,7 @@ void loop() {
 
   //THRUSTER LEFT
 
-        signal_cl = map(inptl,0,9,1100,1900);
+        signal_cl = map(inptl,1,9,1100,1900);
         if (signal_cl != signal_pl)
         {
         servoL.writeMicroseconds(signal_cl); // Send signal to ESC.
