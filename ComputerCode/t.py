@@ -26,8 +26,9 @@ current_state=CurrentState()
 class LocalValues():
     def __init__(self):
         self.presentAngle=0
+        self.currentReading=''
 current_angle=LocalValues()
-
+current_reading=LocalValues()
 
 
 def apply_deadzone(x, deadzone, scale):
@@ -208,17 +209,21 @@ def maneuver(event):
             flapres=int(int(event['RT'])/28)
 
     res=res+str(flapres)+encres
-    print res
+    
       
     # if 'Y2' in event:
     #     Y2_val=event['Y2']*90/32768
     #     # Y2_val=int(Y2_val)
     #     print Y2_val
     # print event
-    msg=xbox()
-    msg.message=str(res)    
-    #print str(a)
-    lc.publish("Xbox", msg.encode())
+    if current_reading.currentReading!=res:
+        print res
+        msg=xbox()
+        msg.message=str(res)    
+        #print str(a)
+        lc.publish("Xbox", msg.encode())
+        current_reading.currentReading=res
+
     
 
 

@@ -4,29 +4,24 @@ import ast
 import serial
 
 port='/dev/ttyUSB1'
-s=serial.Serial(port,115200)
+s=serial.Serial(port,38400)
 port2='/dev/ttyUSB2'
-s2=serial.Serial(port2,)
+s2=serial.Serial(port2,38400)
 
-def modify(i):
-    if i<10:
-        a='00'+str(i)
-    elif i<100:
-        a='0'+str(i)
-    else:
-        a=str(i)
-    return a
 def  iron_msg(channel,data):
     msg=xbox.decode(data)
-    input_msg=ast.literal_eval(msg.message)
-    content=""
-    if 'RT' in input_msg:
-        content+='R'+str(modify(input_msg['RT']))
-    if 'LT' in input_msg:
-        content+='L'+str(modify(input_msg['LT']))
-    print content
-    if len(content)>0:
-        s.write(content)
+    input_msg=msg.message
+    first_arduino_msg=input_msg[2:]
+    second_arduino_msg=input_msg[:2]
+    s1.write(first_arduino_msg)
+    s2.write(second_arduino_msg)
+    print input_msg
+    if s1.readline():
+        print s1.readline()
+    if s2.readline():
+        print s2.readline()
+
+
 lc = lcm.LCM("udpm://224.0.0.251:7667?ttl=1")
 subscribe=lc.subscribe("Xbox",iron_msg)
 
