@@ -147,7 +147,7 @@ void loop(){
     while(1)
    {
     long EnL_Pos=EnL.read();
-    long EnR_Pos=EnR.read();
+    
     if (abs(EnL_Pos)<inpen)
     {
       digitalLow(M1BRK);
@@ -163,8 +163,16 @@ void loop(){
     else if (abs(EnL_Pos)==inpen)
     {
       digitalHigh(M1BRK);
+      break;
     }
 
+   }
+
+   while(1)
+   {
+    
+    long EnR_Pos=EnR.read();
+   
     if (abs(EnR_Pos)<inpen)
     { digitalLow(M2BRK);
       digitalHigh(M2Dir);
@@ -178,10 +186,6 @@ void loop(){
     else if (abs(EnR_Pos)==inpen)
     {
       digitalHigh(M2BRK);
-    }
-    
-    if ((abs(EnL_Pos)==inpen)&&(abs(EnR_Pos)==inpen))
-    {
       break;
     }
    }
@@ -203,28 +207,26 @@ void loop(){
       }
    
    
-   }
    digitalHigh(M1BRK);
    digitalHigh(M2BRK);
    
-  }
-  else
-  {
-    if (abs(EnR_Pos)>=1600)
-   {
-    analogWrite(M1PWM,0);
-    digitalHigh(M1BRK);
-    //Serial.println("Enr is 1600. Break applied");
-    }
-
-  if(abs(EnL_Pos)>=1600)
-    {
-      analogWrite(M2PWM,0);
-      digitalHigh(M2BRK);
-      //Serial.println("Enl is 1600. Break applied");
-      }
-   
-  }
+//  else
+//  {
+//    if (abs(EnR_Pos)>=1600)
+//   {
+//    analogWrite(M1PWM,0);
+//    digitalHigh(M1BRK);
+//    //Serial.println("Enr is 1600. Break applied");
+//    }
+//
+//  if(abs(EnL_Pos)>=1600)
+//    {
+//      analogWrite(M2PWM,0);
+//      digitalHigh(M2BRK);
+//      //Serial.println("Enl is 1600. Break applied");
+//      }
+//   
+//  }
   
    // send serial data to PC - current sensor and voltage sensor
   count = count + 1;
